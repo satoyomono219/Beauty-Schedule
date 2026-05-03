@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Beauty Schedule</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --mint:#C8DDD8;--mint-dark:#A8C4BE;--mint-light:#E0EDEA;
+  --gold:#B8944A;--gold-light:#D4A860;--gold-pale:#F0E4C0;
+  --text:#1A2C28;--text-dim:#5A7870;--border:#C0D4CE;
+  --rose:#C8836A;--rose-light:#FAE9E2;--sage:#6A9870;--sage-light:#DCF0E4;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Shippori Mincho',serif;background-color:var(--mint);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23C8A84A' stroke-width='0.6' opacity='0.3'%3E%3Ccircle cx='40' cy='40' r='10'/%3E%3Ccircle cx='40' cy='40' r='5'/%3E%3Cellipse cx='40' cy='26' rx='4' ry='8'/%3E%3Cellipse cx='40' cy='54' rx='4' ry='8'/%3E%3Cellipse cx='26' cy='40' rx='8' ry='4'/%3E%3Cellipse cx='54' cy='40' rx='8' ry='4'/%3E%3Cellipse cx='29' cy='29' rx='4' ry='8' transform='rotate(45 29 29)'/%3E%3Cellipse cx='51' cy='51' rx='4' ry='8' transform='rotate(45 51 51)'/%3E%3Cellipse cx='51' cy='29' rx='4' ry='8' transform='rotate(-45 51 29)'/%3E%3Cellipse cx='29' cy='51' rx='4' ry='8' transform='rotate(-45 29 51)'/%3E%3Ccircle cx='0' cy='0' r='4'/%3E%3Cellipse cx='0' cy='-8' rx='2' ry='5'/%3E%3Cellipse cx='0' cy='8' rx='2' ry='5'/%3E%3Cellipse cx='-8' cy='0' rx='5' ry='2'/%3E%3Cellipse cx='8' cy='0' rx='5' ry='2'/%3E%3Ccircle cx='80' cy='0' r='4'/%3E%3Cellipse cx='80' cy='8' rx='2' ry='5'/%3E%3Cellipse cx='72' cy='0' rx='5' ry='2'/%3E%3Ccircle cx='0' cy='80' r='4'/%3E%3Cellipse cx='0' cy='72' rx='2' ry='5'/%3E%3Cellipse cx='8' cy='80' rx='5' ry='2'/%3E%3Ccircle cx='80' cy='80' r='4'/%3E%3Cellipse cx='80' cy='72' rx='2' ry='5'/%3E%3Cellipse cx='72' cy='80' rx='5' ry='2'/%3E%3C/g%3E%3C/svg%3E");color:var(--text);min-height:100vh;max-width:430px;margin:0 auto;}
+
+/* ヘッダー */
+.header{background:var(--mint-light);border-bottom:2px solid var(--gold);padding:48px 20px 14px;position:sticky;top:0;z-index:20;}
+.logo-wrap{display:flex;justify-content:center;margin-bottom:12px;}
+.logo-inner{position:relative;display:inline-block;}
+.logo-text{display:block;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;letter-spacing:0.12em;color:var(--text);background:white;padding:14px 36px;position:relative;z-index:1;white-space:nowrap;}
+.logo-text em{font-style:italic;color:var(--gold);font-weight:400;}
+.logo-svg{position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:2;}
+.tab-nav{display:flex;gap:3px;background:var(--mint);border-radius:12px;padding:3px;}
+.tab-btn{flex:1;background:none;border:none;border-radius:8px;padding:7px 2px;font-family:'Shippori Mincho',serif;font-size:11px;color:var(--text-dim);cursor:pointer;transition:all 0.2s;}
+.tab-btn.active{background:white;color:var(--gold);font-weight:600;}
+
+/* サマリーバー */
+.summary{display:flex;gap:1px;background:var(--gold);border-bottom:1px solid var(--gold);}
+.sum-item{flex:1;background:white;padding:10px 4px;text-align:center;cursor:pointer;transition:background 0.15s;}
+.sum-item:hover{background:var(--gold-pale);}
+.sum-num{font-family:'Cormorant Garamond',serif;font-size:20px;line-height:1;font-weight:600;}
+.sum-num.r{color:var(--rose);}.sum-num.g{color:var(--sage);}.sum-num.b{color:#6A7FA8;}.sum-num.s{color:var(--gold);}
+.sum-lbl{font-size:8px;letter-spacing:0.1em;color:var(--text-dim);margin-top:2px;text-transform:uppercase;font-weight:700;}
+
+
+
+/* シェアカード */
+.share-card-wrap{display:flex;flex-direction:column;align-items:center;padding:16px;}
+.share-card{width:320px;background:white;border-radius:20px;overflow:hidden;box-shadow:0 8px 32px rgba(184,148,74,0.2);}
+.share-card-header{background:linear-gradient(135deg,#C8DDD8,#E0EDEA);padding:24px 20px 16px;text-align:center;position:relative;}
+.share-card-header::before{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='%23C8A84A' stroke-width='0.5' opacity='0.3'%3E%3Ccircle cx='30' cy='30' r='8'/%3E%3Cellipse cx='30' cy='20' rx='3' ry='6'/%3E%3Cellipse cx='30' cy='40' rx='3' ry='6'/%3E%3Cellipse cx='20' cy='30' rx='6' ry='3'/%3E%3Cellipse cx='40' cy='30' rx='6' ry='3'/%3E%3C/g%3E%3C/svg%3E");}
+.share-logo{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:#1A2C28;letter-spacing:0.1em;position:relative;}
+.share-logo em{font-style:italic;color:#B8944A;}
+.share-year{font-size:11px;color:#5A7870;letter-spacing:0.2em;margin-top:2px;position:relative;}
+.share-divider{width:40px;height:1px;background:linear-gradient(90deg,transparent,#B8944A,transparent);margin:10px auto;position:relative;}
+.share-stats-row{display:flex;justify-content:center;gap:20px;padding:0 0 4px;position:relative;}
+.share-stat{text-align:center;}
+.share-stat-num{font-family:'Cormorant Garamond',serif;font-size:24px;color:#B8944A;font-weight:600;line-height:1;}
+.share-stat-lbl{font-size:9px;color:#5A7870;letter-spacing:0.1em;text-transform:uppercase;}
+.share-body{padding:14px 16px;}
+.share-routine-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #E0EDEA;}
+.share-routine-row:last-child{border-bottom:none;}
+.share-routine-icon{font-size:16px;width:26px;text-align:center;}
+.share-routine-name{flex:1;font-size:12px;color:#1A2C28;font-weight:600;}
+.share-routine-count{font-family:'Cormorant Garamond',serif;font-size:16px;color:#B8944A;font-weight:600;}
+.share-routine-cost{font-size:11px;color:#5A7870;}
+.share-footer{background:#F5F0E8;padding:10px 16px;text-align:center;}
+.share-footer-text{font-size:10px;color:#8A7860;letter-spacing:0.1em;}
+.share-monthly{padding:0 16px 12px;}
+.share-monthly-title{font-size:10px;letter-spacing:0.2em;color:#5A7870;font-weight:700;text-transform:uppercase;margin-bottom:8px;margin-top:10px;}
+.share-bar-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+.share-bar-lbl{font-size:10px;color:#5A7870;min-width:24px;}
+.share-bar-track{flex:1;height:8px;background:#E0EDEA;border-radius:4px;overflow:hidden;}
+.share-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#B8944A,#D4A860);}
+.share-bar-val{font-size:10px;color:#B8944A;min-width:36px;text-align:right;}
+
+/* シェアボタン */
+.share-btn-row{display:flex;gap:10px;margin-top:16px;width:320px;}
+.share-btn{flex:1;border:none;border-radius:12px;padding:12px;font-family:'Shippori Mincho',serif;font-size:13px;cursor:pointer;font-weight:600;}
+.share-btn.primary{background:linear-gradient(135deg,var(--rose),var(--gold-light));color:white;}
+.share-btn.secondary{background:var(--mint-light);color:var(--text-dim);border:1px solid var(--border);}
+
+/* スタイル切替 */
+.style-selector{display:flex;gap:8px;margin-bottom:14px;width:320px;}
+.style-opt{flex:1;background:white;border:1.5px solid var(--border);border-radius:10px;padding:8px;text-align:center;cursor:pointer;font-size:12px;color:var(--text-dim);transition:all 0.2s;}
+.style-opt.active{border-color:var(--gold);color:var(--gold);background:var(--gold-pale);}
+
+/* 勝負日 */
+.event-card{background:white;border-radius:18px;margin-bottom:14px;overflow:hidden;box-shadow:0 4px 20px rgba(200,131,106,0.15);border:1px solid var(--rose-light);}
+.event-header{padding:16px;display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,var(--rose-light),var(--gold-pale));}
+.event-icon{font-size:28px;}
+.event-info{flex:1;}
+.event-name{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--text);font-weight:600;}
+.event-date{font-size:12px;color:var(--rose);}
+.event-countdown{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--rose);font-weight:600;text-align:right;}
+.event-countdown-lbl{font-size:10px;color:var(--rose);text-align:right;}
+.schedule-item{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--mint-light);}
+.schedule-item:last-child{border-bottom:none;}
+.schedule-day{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);min-width:60px;font-weight:600;}
+.schedule-name{flex:1;font-size:13px;color:var(--text);}
+.schedule-status{font-size:11px;padding:3px 8px;border-radius:10px;}
+.schedule-ok{background:var(--sage-light);color:var(--sage);}
+.schedule-warn{background:#FCECEA;color:#C07070;}
+.schedule-normal{background:var(--gold-pale);color:var(--gold);}
+
+/* リマインダーバナー */
+.reminder-banner{background:linear-gradient(135deg,#FCECEA,#FAE9E2);border-left:3px solid var(--rose);padding:10px 16px;font-size:12px;color:var(--rose);display:flex;align-items:center;gap:8px;}
+
+/* メイン */
+.main{padding:12px 16px 120px;}
+
+/* ルーチンカード */
+.routine-card{background:white;border-radius:18px;margin-bottom:14px;overflow:hidden;box-shadow:0 2px 16px rgba(184,148,74,0.1);border:1px solid var(--gold-pale);position:relative;transition:transform 0.2s;}
+.routine-card.dragging{opacity:0.5;transform:scale(0.98);}
+.routine-card.drag-over{border:2px dashed var(--gold);}
+.routine-header{padding:14px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;border-bottom:1px solid var(--gold-pale);}
+.drag-handle{font-size:18px;color:var(--border);cursor:grab;padding:0 4px;touch-action:none;}
+.routine-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.routine-info{flex:1;}
+.routine-name{font-size:15px;font-weight:600;color:var(--text);}
+.routine-meta{font-size:11px;color:var(--text-dim);margin-top:2px;}
+.routine-stats{display:flex;flex-direction:column;align-items:flex-end;gap:2px;}
+.routine-count{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);line-height:1;}
+.routine-count-lbl{font-size:9px;color:var(--text-dim);letter-spacing:0.1em;}
+.star-row{display:flex;gap:2px;}
+.star{font-size:14px;cursor:pointer;color:var(--border);transition:color 0.1s;}
+.star.filled{color:var(--gold);}
+
+/* 次回バナー */
+.next-banner{padding:8px 16px;font-size:12px;display:flex;align-items:center;gap:6px;}
+.advice-banner{margin:0 16px 10px;padding:10px 14px;border-radius:10px;font-size:12px;line-height:1.6;border-left:3px solid var(--gold);background:var(--gold-pale);color:#8A6A20;}
+
+/* スワイプ用レコード行 */
+.record-swipe-wrap{position:relative;overflow:hidden;border-radius:8px;margin-bottom:2px;}
+.record-swipe-actions{position:absolute;right:0;top:0;height:100%;display:flex;align-items:stretch;}
+.swipe-done-btn{background:var(--sage);color:white;border:none;padding:0 16px;font-size:11px;font-family:'Shippori Mincho',serif;cursor:pointer;}
+.swipe-del-btn{background:var(--rose);color:white;border:none;padding:0 14px;font-size:11px;font-family:'Shippori Mincho',serif;cursor:pointer;}
+.record-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--mint-light);cursor:pointer;background:white;transition:transform 0.2s;position:relative;z-index:1;}
+.record-row:last-child{border-bottom:none;}
+.record-num{font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--text-dim);min-width:20px;text-align:center;}
+.record-date{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--text);min-width:56px;}
+.record-date.no-date{color:var(--text-dim);font-size:13px;font-style:italic;font-family:'Shippori Mincho',serif;}
+.record-info{flex:1;}
+.record-note{font-size:11px;color:var(--text-dim);}
+.record-cost{font-size:12px;color:var(--gold);}
+.record-photo{width:28px;height:28px;border-radius:6px;object-fit:cover;}
+.record-status{font-size:11px;padding:3px 8px;border-radius:10px;}
+.status-done{background:var(--sage-light);color:var(--sage);}
+.status-planned{background:var(--gold-pale);color:var(--gold);}
+
+.add-record-btn{width:100%;background:none;border:1.5px dashed var(--gold);border-radius:10px;padding:8px;font-size:12px;color:var(--gold);cursor:pointer;font-family:'Shippori Mincho',serif;transition:all 0.2s;margin-top:6px;}
+.add-record-btn:hover{background:var(--gold-pale);}
+
+/* 肌コンディション */
+.skin-diary{padding:10px 16px;background:var(--mint-light);border-top:1px solid var(--border);}
+.skin-title{font-size:10px;letter-spacing:0.2em;color:var(--text-dim);font-weight:700;text-transform:uppercase;margin-bottom:6px;}
+.skin-entry{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px;}
+.skin-emoji{font-size:16px;}
+
+/* グラフ */
+.chart-wrap{background:white;border-radius:14px;padding:16px;margin-bottom:14px;border:1px solid var(--gold-pale);}
+.chart-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
+.chart-bars{display:flex;align-items:flex-end;gap:4px;height:100px;}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.chart-bar{width:100%;border-radius:4px 4px 0 0;background:linear-gradient(to top,var(--gold),var(--gold-light));min-height:2px;transition:height 0.5s ease;}
+.chart-bar-lbl{font-size:9px;color:var(--text-dim);}
+.chart-bar-val{font-size:9px;color:var(--gold);font-weight:600;}
+
+/* FAB */
+.fab{position:fixed;bottom:28px;right:20px;width:56px;height:56px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border:none;border-radius:50%;font-size:22px;color:white;cursor:pointer;box-shadow:0 4px 20px rgba(184,148,74,0.5);transition:all 0.2s;z-index:50;}
+
+/* モーダル */
+.overlay{display:none;position:fixed;inset:0;background:rgba(26,44,40,0.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:100;align-items:flex-end;justify-content:center;}
+.overlay.open{display:flex;}
+.modal{background-color:var(--mint);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23C8A84A' stroke-width='0.5' opacity='0.2'%3E%3Ccircle cx='40' cy='40' r='10'/%3E%3Ccircle cx='40' cy='40' r='5'/%3E%3Cellipse cx='40' cy='26' rx='4' ry='8'/%3E%3Cellipse cx='40' cy='54' rx='4' ry='8'/%3E%3Cellipse cx='26' cy='40' rx='8' ry='4'/%3E%3Cellipse cx='54' cy='40' rx='8' ry='4'/%3E%3C/g%3E%3C/svg%3E");border-radius:24px 24px 0 0;width:100%;max-width:430px;max-height:92vh;overflow-y:auto;padding:20px 20px 40px;animation:slideUp 0.3s ease;}
+.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px;}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold);margin-bottom:18px;font-weight:400;}
+.form-group{margin-bottom:14px;}
+.form-label{display:block;font-size:11px;letter-spacing:0.15em;color:var(--text-dim);margin-bottom:5px;font-weight:600;text-transform:uppercase;}
+.form-input,.form-select{width:100%;background:white;border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-family:'Shippori Mincho',serif;font-size:14px;color:var(--text);outline:none;transition:border-color 0.2s;-webkit-appearance:none;}
+.form-input:focus,.form-select:focus{border-color:var(--gold);}
+.form-row{display:flex;gap:8px;}.form-row .form-group{flex:1;}
+.form-hint{font-size:11px;color:var(--text-dim);margin-top:4px;}
+.modal-actions{display:flex;gap:8px;margin-top:20px;}
+.btn-main{flex:1;background:linear-gradient(135deg,var(--gold),var(--gold-light));border:none;border-radius:12px;padding:13px;color:white;font-family:'Shippori Mincho',serif;font-size:14px;cursor:pointer;font-weight:600;}
+.btn-sub{flex:1;background:linear-gradient(135deg,#C8A84A,#E8C870);border:none;border-radius:12px;padding:13px;color:white;font-family:'Shippori Mincho',serif;font-size:14px;cursor:pointer;font-weight:600;}
+.btn-ghost{flex:1;background:var(--mint-light);border:1px solid var(--border);border-radius:12px;padding:13px;color:var(--text-dim);font-family:'Shippori Mincho',serif;font-size:14px;cursor:pointer;}
+
+/* メモ */
+.memo-box{background:white;border-radius:14px;padding:14px 16px;margin-bottom:14px;border:1px solid var(--gold-pale);border-top:2px solid var(--gold);}
+.memo-title{font-size:11px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;font-weight:700;}
+.memo-edit-btn{background:none;border:none;font-size:12px;color:var(--gold);cursor:pointer;font-family:'Shippori Mincho',serif;}
+.memo-text{font-size:14px;color:var(--text);line-height:1.7;white-space:pre-wrap;}
+.memo-empty{font-size:13px;color:var(--text-dim);font-style:italic;}
+.memo-textarea{width:100%;background:white;border:1px solid var(--gold);border-radius:10px;padding:10px 12px;font-family:'Shippori Mincho',serif;font-size:14px;color:var(--text);outline:none;resize:none;min-height:80px;line-height:1.7;}
+.memo-save-row{display:flex;gap:6px;margin-top:8px;}
+.memo-save-btn{background:var(--gold);color:white;border:none;border-radius:8px;padding:6px 16px;font-size:12px;font-family:'Shippori Mincho',serif;cursor:pointer;}
+.memo-cancel-btn{background:var(--mint-light);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:12px;color:var(--text-dim);font-family:'Shippori Mincho',serif;cursor:pointer;}
+
+/* シート */
+.sheet-overlay{display:none;position:fixed;inset:0;background:rgba(26,44,40,0.5);backdrop-filter:blur(6px);z-index:100;align-items:flex-end;justify-content:center;}
+.sheet-overlay.open{display:flex;}
+.sheet{background:white;border-radius:24px 24px 0 0;width:100%;max-width:430px;max-height:85vh;overflow-y:auto;padding:20px 20px 40px;animation:slideUp 0.3s ease;}
+
+/* 星評価入力 */
+.star-input{display:flex;gap:8px;font-size:28px;}
+.star-input span{cursor:pointer;color:var(--border);transition:color 0.1s;}
+.star-input span.on{color:var(--gold);}
+
+/* 写真プレビュー */
+.photo-preview{width:60px;height:60px;border-radius:10px;object-fit:cover;margin-top:8px;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.empty{text-align:center;padding:24px;font-size:13px;color:var(--text-dim);}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-wrap">
+    <div class="logo-inner">
+      <div class="logo-text">Beauty <em>Schedule</em></div>
+      <svg class="logo-svg" viewBox="0 0 260 56" preserveAspectRatio="none">
+        <defs><linearGradient id="gl" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#B8944A"/><stop offset="50%" stop-color="#F0D070"/><stop offset="100%" stop-color="#B8944A"/></linearGradient></defs>
+        <rect x="0.5" y="0.5" width="259" height="55" stroke="url(#gl)" stroke-width="1.5" fill="none"/>
+        <rect x="5" y="4" width="250" height="48" stroke="url(#gl)" stroke-width="0.6" fill="none"/>
+        <polyline points="0,22 0,0 22,0" stroke="url(#gl)" stroke-width="3" fill="none"/>
+        <polyline points="5,22 5,5 22,5" stroke="url(#gl)" stroke-width="1" fill="none"/>
+        <path d="M6,6 Q14,6 19,14 Q23,21 23,30" stroke="url(#gl)" stroke-width="1" fill="none"/>
+        <path d="M11,5 Q20,6 23,13 Q26,20 25,29" stroke="url(#gl)" stroke-width="0.7" fill="none"/>
+        <path d="M22,1 Q30,1 30,9 Q30,17 22,17 Q17,17 17,12 Q17,8 21,8 Q24,8 24,11 Q24,13 22,13" stroke="url(#gl)" stroke-width="1.1" fill="none"/>
+        <path d="M1,22 Q1,30 9,30 Q17,30 17,22 Q17,17 12,17 Q8,17 8,21 Q8,24 11,24 Q13,24 13,22" stroke="url(#gl)" stroke-width="1.1" fill="none"/>
+        <polygon points="16,15 20,11 24,15 20,19" fill="url(#gl)"/>
+        <circle cx="23" cy="5" r="2" fill="url(#gl)"/><circle cx="5" cy="23" r="2" fill="url(#gl)"/>
+        <polyline points="260,22 260,0 238,0" stroke="url(#gl)" stroke-width="3" fill="none"/>
+        <polyline points="255,22 255,5 238,5" stroke="url(#gl)" stroke-width="1" fill="none"/>
+        <path d="M254,6 Q246,6 241,14 Q237,21 237,30" stroke="url(#gl)" stroke-width="1" fill="none"/>
+        <path d="M249,5 Q240,6 237,13 Q234,20 235,29" stroke="url(#gl)" stroke-width="0.7" fill="none"/>
+        <path d="M238,1 Q230,1 230,9 Q230,17 238,17 Q243,17 243,12 Q243,8 239,8 Q236,8 236,11 Q236,13 238,13" stroke="url(#gl)" stroke-width="1.1" fill="none"/>
+        <path d="M259,22 Q259,30 251,30 Q243,30 243,22 Q243,17 248,17 Q252,17 252,21 Q252,24 249,24 Q247,24 247,22" stroke="url(#gl)" stroke-width="1.1" fill="none"/>
+        <polygon points="244,15 240,11 236,15 240,19" fill="url(#gl)"/>
+        <circle cx="237" cy="5" r="2" fill="url(#gl)"/><circle cx="255" cy="23" r="2" fill="url(#gl)"/>
+        <polyline points="0,34 0,56 22,56" stroke="url(#gl)" stroke-width="3" fill="none"/>
+        <polyline points="5,34 5,51 22,51" stroke="url(#gl)" stroke-width="1" fill="none"/>
+        <path d="M6,50 Q14,50 19,42 Q23,35 23,26" stroke="url(#gl)" stroke-width="1" fill="none"/>
+        <path d="M11,51 Q20,50 23,43 Q26,36 25,27" stroke="url(#gl)" stroke-width="0.7" fill="none"/>
+        <path d="M22,55 Q30,55 30,47 Q30,39 22,39 Q17,39 17,44 Q17,48 21,48 Q24,48 24,45 Q24,43 22,43" stroke="url(#gl)" stroke-width="1.1" fill="none"/>
+        <path d="M1,34 Q1,26 9,26 Q17,26 17,34 Q17,39 12,39 Q8,39 8,35 Q8,32 11,32 Q13,32 13,34" stroke="url(#gl)" stroke-width="1.1" fill="none"/>
+        <polygon points="16,41 20,45 24,41 20,37" fill="url(#gl)"/>
+        <circle cx="23" cy="51" r="2" fill="url(#gl)"/><circle cx="5" cy="33" r="2" fill="url(#gl)"/>
+        <polyline points="260,34 260,56 238,56" stroke="url(#gl)" stroke-width="3" fill="none"/>
+        <polyline points="255,34 255,51 238,51" stroke="url(#gl)" stroke-width="1" fill="none"/>
+        <path d="M254,50 Q246,50 241,42 Q237,35 237,26" stroke="url(#gl)" stroke-width="1" fill="none"/>
+        <path d="M249,51 Q240,50 237,43 Q234,36 235,27" stroke="url(#gl)" stroke-width="0.7" fill="none"/>
+        <path d="M238,55 Q230,55 230,47 Q230,39 238,39 Q243,39 243,44 Q243,48 239,48 Q236,48 236,45 Q236,43 238,43" stroke="url(#gl)" stroke-width="1.1" fill="none"/>
+        <path d="M259,34 Q259,26 251,26 Q243,26 243,34 Q243,39 248,39 Q252,39 252,35 Q252,32 249,32 Q247,32 247,34" stroke="url(#gl)" stroke-width="1.1" fill="none"/>
+        <polygon points="244,41 240,45 236,41 240,37" fill="url(#gl)"/>
+        <circle cx="237" cy="51" r="2" fill="url(#gl)"/><circle cx="255" cy="33" r="2" fill="url(#gl)"/>
+        <line x1="34" y1="0" x2="96" y2="0" stroke="url(#gl)" stroke-width="2.5"/>
+        <line x1="164" y1="0" x2="226" y2="0" stroke="url(#gl)" stroke-width="2.5"/>
+        <polygon points="130,0 134,5 130,10 126,5" fill="url(#gl)"/>
+        <polygon points="120,0 123,4 120,8 117,4" fill="url(#gl)"/>
+        <polygon points="140,0 143,4 140,8 137,4" fill="url(#gl)"/>
+        <line x1="34" y1="56" x2="96" y2="56" stroke="url(#gl)" stroke-width="2.5"/>
+        <line x1="164" y1="56" x2="226" y2="56" stroke="url(#gl)" stroke-width="2.5"/>
+        <polygon points="130,56 134,51 130,46 126,51" fill="url(#gl)"/>
+        <polygon points="120,56 123,52 120,48 117,52" fill="url(#gl)"/>
+        <polygon points="140,56 143,52 140,48 137,52" fill="url(#gl)"/>
+        <circle cx="0" cy="28" r="5.5" fill="url(#gl)"/><circle cx="0" cy="28" r="2.8" fill="white"/><circle cx="0" cy="28" r="1.2" fill="url(#gl)"/>
+        <circle cx="260" cy="28" r="5.5" fill="url(#gl)"/><circle cx="260" cy="28" r="2.8" fill="white"/><circle cx="260" cy="28" r="1.2" fill="url(#gl)"/>
+      </svg>
+    </div>
+  </div>
+  <div class="tab-nav">
+    <button class="tab-btn active" id="tabRoutine" onclick="setTab('routine')">🌿 ルーチン</button>
+    <button class="tab-btn" id="tabTimeline" onclick="setTab('timeline')">📅 タイムライン</button>
+    <button class="tab-btn" id="tabGraph" onclick="setTab('graph')">📊 グラフ</button>
+    <button class="tab-btn" id="tabEvent" onclick="setTab('event')">🎯 勝負日</button>
+    <button class="tab-btn" id="tabShare" onclick="setTab('share')">📷 シェア</button>
+    <button class="tab-btn" id="tabMemo" onclick="setTab('memo')">📝 メモ</button>
+  </div>
+</div>
+
+<div class="summary" id="summaryBar"></div>
+<div id="reminderArea"></div>
+<div class="main" id="mainContent"></div>
+
+<button class="fab" id="fabBtn" onclick="fabAction()">＋</button>
+
+<!-- ルーチン追加・編集モーダル -->
+<div class="overlay" id="routineOverlay">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="routineModalTitle">ルーチンを追加</div>
+    <input type="hidden" id="routineEditId">
+    <div class="form-group">
+      <label class="form-label">施術名・習慣名</label>
+      <input type="text" class="form-input" id="routineName" placeholder="例：ネイル、ボトックス、美容院">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">カテゴリー</label>
+        <select class="form-select" id="routineCategory">
+          <option value="美容医療">💉 美容医療</option>
+          <option value="美容院">✂️ 美容院</option>
+          <option value="ネイル">💅 ネイル</option>
+          <option value="まつげ">👁️ まつげ</option>
+          <option value="エステ">✨ エステ</option>
+          <option value="歯科">🦷 歯科</option>
+          <option value="その他">📌 その他</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">間隔（ヶ月）</label>
+        <input type="number" class="form-input" id="routineInterval" placeholder="1" min="1">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">クリニック／サロン名</label>
+      <input type="text" class="form-input" id="routineClinic" placeholder="例：○○クリニック">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">平均費用（円）</label>
+        <input type="number" class="form-input" id="routineCost" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">DT（日）</label>
+        <input type="number" class="form-input" id="routineDowntime" placeholder="0">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">効果持続期間（ヶ月）</label>
+      <input type="number" class="form-input" id="routineEffect" placeholder="例：3（3ヶ月持続）">
+      <div class="form-hint">記録カードに持続期限が表示されます</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">クリニック評価</label>
+      <div class="star-input" id="routineStarInput">
+        <span onclick="setRoutineStar(1)">★</span>
+        <span onclick="setRoutineStar(2)">★</span>
+        <span onclick="setRoutineStar(3)">★</span>
+        <span onclick="setRoutineStar(4)">★</span>
+        <span onclick="setRoutineStar(5)">★</span>
+      </div>
+      <input type="hidden" id="routineStar" value="0">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-sub" onclick="closeRoutineModal()">キャンセル</button>
+      <button class="btn-main" onclick="saveRoutine()">保存する</button>
+    </div>
+  </div>
+</div>
+
+<!-- 記録追加モーダル -->
+<div class="overlay" id="recordOverlay">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="recordModalTitle">記録を追加</div>
+    <input type="hidden" id="recordRoutineId">
+    <input type="hidden" id="recordEditIdx">
+    <div class="form-group">
+      <label class="form-label">日付</label>
+      <input type="date" class="form-input" id="recordDate">
+    </div>
+    <div class="form-group">
+      <label class="form-label">費用（円）</label>
+      <input type="number" class="form-input" id="recordCost" placeholder="0">
+    </div>
+    <div class="form-group">
+      <label class="form-label">施術前メモ</label>
+      <input type="text" class="form-input" id="recordBefore" placeholder="例：乾燥が気になる、色持ち3週間">
+    </div>
+    <div class="form-group">
+      <label class="form-label">施術後メモ・感想</label>
+      <input type="text" class="form-input" id="recordAfter" placeholder="例：仕上がり最高！腫れなし">
+    </div>
+    <div class="form-group">
+      <label class="form-label">写真メモ（URLまたはカメラロールから）</label>
+      <input type="file" accept="image/*" class="form-input" id="recordPhotoFile" style="padding:8px;" onchange="handlePhotoUpload(event)">
+      <img id="recordPhotoPreview" class="photo-preview" style="display:none;">
+      <input type="hidden" id="recordPhoto">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-sub" onclick="closeRecordModal()">キャンセル</button>
+      <button class="btn-main" onclick="saveRecord()">保存する</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- 勝負日追加モーダル -->
+<div class="overlay" id="eventOverlay">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="eventModalTitle">勝負日を設定</div>
+    <input type="hidden" id="eventEditId">
+    <div class="form-group">
+      <label class="form-label">イベント名</label>
+      <input type="text" class="form-input" id="eventName" placeholder="例：旅行、記念日、撮影、デート">
+    </div>
+    <div class="form-group">
+      <label class="form-label">目標日（当日）</label>
+      <input type="date" class="form-input" id="eventDate">
+    </div>
+    <div class="form-group">
+      <label class="form-label">絵文字</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;" id="eventEmojiPicker">
+        <button onclick="selectEventEmoji('✈️')" class="form-input" style="width:auto;padding:8px;">✈️ 旅行</button>
+        <button onclick="selectEventEmoji('💍')" class="form-input" style="width:auto;padding:8px;">💍 記念日</button>
+        <button onclick="selectEventEmoji('📸')" class="form-input" style="width:auto;padding:8px;">📸 撮影</button>
+        <button onclick="selectEventEmoji('💕')" class="form-input" style="width:auto;padding:8px;">💕 デート</button>
+        <button onclick="selectEventEmoji('🎉')" class="form-input" style="width:auto;padding:8px;">🎉 パーティー</button>
+        <button onclick="selectEventEmoji('💼')" class="form-input" style="width:auto;padding:8px;">💼 仕事</button>
+      </div>
+      <input type="hidden" id="eventEmoji" value="✈️">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-sub" onclick="closeEventModal()">キャンセル</button>
+      <button class="btn-main" onclick="saveEvent()">設定する</button>
+    </div>
+  </div>
+</div>
+
+<!-- 肌コンディション日記モーダル -->
+<div class="overlay" id="skinOverlay">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🌿 肌コンディション日記</div>
+    <div class="form-group">
+      <label class="form-label">今日の肌状態</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;" id="skinEmojiPicker">
+        <button onclick="selectSkinEmoji('😊')" class="form-input" style="width:auto;padding:8px 12px;">😊 普通</button>
+        <button onclick="selectSkinEmoji('✨')" class="form-input" style="width:auto;padding:8px 12px;">✨ 絶好調</button>
+        <button onclick="selectSkinEmoji('😴')" class="form-input" style="width:auto;padding:8px 12px;">😴 くすみ</button>
+        <button onclick="selectSkinEmoji('🔴')" class="form-input" style="width:auto;padding:8px 12px;">🔴 炎症</button>
+        <button onclick="selectSkinEmoji('💧')" class="form-input" style="width:auto;padding:8px 12px;">💧 乾燥</button>
+        <button onclick="selectSkinEmoji('🛢️')" class="form-input" style="width:auto;padding:8px 12px;">🛢️ 脂っぽい</button>
+      </div>
+      <input type="hidden" id="skinEmoji" value="">
+    </div>
+    <div class="form-group">
+      <label class="form-label">コメント</label>
+      <input type="text" class="form-input" id="skinComment" placeholder="例：施術後3日目、腫れひいた">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-sub" onclick="closeSkinModal()">キャンセル</button>
+      <button class="btn-main" onclick="saveSkinDiary()">記録する</button>
+    </div>
+  </div>
+</div>
+
+<!-- サマリーシート -->
+<div class="sheet-overlay" id="sheetOverlay">
+  <div class="sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="sheetTitle"></div>
+    <div id="sheetContent"></div>
+    <button class="btn-sub" onclick="closeSheet()" style="width:100%;margin-top:16px;">閉じる</button>
+  </div>
+</div>
+
+<script>
+const CAT={'美容医療':{icon:'💉',bg:'#FCECEA',color:'#C07070'},'美容院':{icon:'✂️',bg:'#E8EEF8',color:'#6A7FA8'},'ネイル':{icon:'💅',bg:'#FAE9E2',color:'#C4978A'},'まつげ':{icon:'👁️',bg:'#EDF5ED',color:'#6A9870'},'エステ':{icon:'✨',bg:'#F5F0E8',color:'#A08060'},'歯科':{icon:'🦷',bg:'#EEF0F8',color:'#7080A8'},'その他':{icon:'📌',bg:'#F0EEF5',color:'#8878A8'}};
+
+const ADVICE={'ボトックス':'2週間はマッサージ・サウナ・激しい運動NG。うつ伏せ寝も避けて。','ヒアルロン酸':'当日は患部を触らない。1週間は激しい運動・飲酒控えめに。','ジャルプロ':'腫れが引くまで患部を触らない。強いマッサージNG。','ハイフ':'熱感が続く場合は冷やして。1週間は高温の場所（サウナ等）NG。','フォト':'施術後は日焼け止め必須！赤みは数日で引きます。','エレポレ':'施術後は保湿をしっかり。刺激の強いスキンケアは翌日から。','ダーマペン':'当日洗顔NG。3日間は日焼け止め＋丁寧な保湿を。','ピコ':'施術後は紫外線対策を徹底。かさぶたを触らない。','アートメイク':'1週間は水に濡らさない。かさぶたを剥がさないで。','脱毛':'当日は入浴OK。1週間は日焼け・激しい運動を避けて。','プロファイロ':'当日は患部を触らない。腫れは数日で引きます。'};
+
+function getAdvice(name){for(const[k,v]of Object.entries(ADVICE)){if(name.includes(k))return v;}return null;}
+function getData(){return JSON.parse(localStorage.getItem('beautyRoutines3')||'[]');}
+function saveData(d){localStorage.setItem('beautyRoutines3',JSON.stringify(d));}
+function getSkin(){return JSON.parse(localStorage.getItem('beautySkin')||'[]');}
+function saveSkin(d){localStorage.setItem('beautySkin',JSON.stringify(d));}
+function getMemo(){return localStorage.getItem('beautyMemo3')||'';}
+function saveMemoStore(t){localStorage.setItem('beautyMemo3',t);}
+function todayStr(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function calcNext(ds,months){if(!ds||!months)return null;const d=new Date(ds);d.setMonth(d.getMonth()+parseInt(months));return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function fmtDate(ds){if(!ds)return'未定';const[y,m,d]=ds.split('-');return`${y}年${parseInt(m)}月${parseInt(d)}日`;}
+function fmtShort(ds){if(!ds)return'—';const[y,m,d]=ds.split('-');return`${parseInt(m)}/${parseInt(d)}`;}
+function daysUntil(ds){return Math.ceil((new Date(ds)-new Date(todayStr()))/(864e5));}
+
+let currentTab='routine';
+
+function setTab(tab){
+  currentTab=tab;
+  ['routine','timeline','graph','event','share','memo'].forEach(t=>{
+    document.getElementById(`tab${t.charAt(0).toUpperCase()+t.slice(1)}`).classList.toggle('active',t===tab);
+  });
+  render();
+}
+
+function render(){
+  const routines=getData();
+  renderSummary(routines);
+  renderReminders(routines);
+  const main=document.getElementById('mainContent');
+  if(currentTab==='routine')renderRoutines(routines,main);
+  else if(currentTab==='timeline')renderTimeline(routines,main);
+  else if(currentTab==='graph')renderGraph(routines,main);
+  else if(currentTab==='event')renderEventTab(main);
+  else if(currentTab==='share')renderShareTab(main);
+  else renderMemoTab(main);
+}
+
+function renderSummary(routines){
+  const all=routines.flatMap(r=>r.records||[]);
+  const done=all.filter(r=>r.done).length;
+  const total=all.reduce((s,r)=>s+(r.cost||0),0);
+  document.getElementById('summaryBar').innerHTML=`
+    <div class="sum-item" onclick="openSheet('routines')"><div class="sum-num r">${routines.length}</div><div class="sum-lbl">Routines</div></div>
+    <div class="sum-item" onclick="openSheet('done')"><div class="sum-num g">${done}</div><div class="sum-lbl">Done</div></div>
+    <div class="sum-item" onclick="openSheet('upcoming')"><div class="sum-num b">${routines.filter(r=>getNextDate(r)).length}</div><div class="sum-lbl">Coming</div></div>
+    <div class="sum-item" onclick="openSheet('cost')"><div class="sum-num s">${total?'¥'+total.toLocaleString():'—'}</div><div class="sum-lbl">Total</div></div>
+  `;
+}
+
+function getNextDate(r){const last=[...(r.records||[])].filter(x=>x.done&&x.date).sort((a,b)=>b.date.localeCompare(a.date))[0];return(last&&r.interval)?calcNext(last.date,r.interval):null;}
+function getLastDate(r){const d=(r.records||[]).filter(x=>x.done&&x.date).sort((a,b)=>b.date.localeCompare(a.date));return d[0]?.date||null;}
+
+// リマインダー（2週間以内）
+function renderReminders(routines){
+  const area=document.getElementById('reminderArea');
+  const upcoming=routines.map(r=>({r,next:getNextDate(r)})).filter(({next})=>next&&daysUntil(next)<=14&&daysUntil(next)>=0);
+  if(!upcoming.length){area.innerHTML='';return;}
+  area.innerHTML=upcoming.map(({r,next})=>`
+    <div class="reminder-banner">
+      <span>🔔</span>
+      <span><b>${r.name}</b> の予約時期です！ ${fmtDate(next)}（${daysUntil(next)}日後）</span>
+    </div>
+  `).join('');
+}
+
+// ============ ルーチンタブ ============
+function renderRoutines(routines,main){
+  main.innerHTML='';
+  if(!routines.length){main.innerHTML='<div class="empty">＋ボタンからルーチンを追加してください</div>';return;}
+
+  // 肌日記ボタン
+  const skinBtn=document.createElement('div');
+  skinBtn.style.cssText='margin-bottom:12px;';
+  const skinEntries=getSkin().slice(-1)[0];
+  skinBtn.innerHTML=`<button onclick="openSkinModal()" style="width:100%;background:white;border:1px solid var(--gold-pale);border-radius:12px;padding:10px;font-size:12px;color:var(--text-dim);cursor:pointer;font-family:'Shippori Mincho',serif;display:flex;align-items:center;justify-content:space-between;">
+    <span>🌿 今日の肌コンディションを記録</span>
+    <span style="color:var(--gold);">${skinEntries?skinEntries.emoji+' '+skinEntries.comment.slice(0,10):'タップして記録'}</span>
+  </button>`;
+  main.appendChild(skinBtn);
+
+  routines.forEach((routine,idx)=>{
+    const cat=CAT[routine.category]||CAT['その他'];
+    const records=routine.records||[];
+    const doneRecs=records.filter(r=>r.done);
+    const nextDate=getNextDate(routine);
+    const lastDate=getLastDate(routine);
+    const advice=getAdvice(routine.name);
+    const stars=routine.star||0;
+
+    // ダウンタイム
+    const inDT=lastDate&&routine.downtime&&new Date(lastDate).getTime()+routine.downtime*864e5>new Date().getTime();
+    const dtEndDate=lastDate&&routine.downtime?(()=>{const d=new Date(lastDate);d.setDate(d.getDate()+parseInt(routine.downtime));return fmtShort(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`)})():null;
+
+    // 効果持続期限
+    const effectEnd=lastDate&&routine.effectMonths?calcNext(lastDate,routine.effectMonths):null;
+    const effectExpired=effectEnd&&effectEnd<todayStr();
+
+    const isOverdue=nextDate&&nextDate<todayStr();
+
+    const card=document.createElement('div');
+    card.className='routine-card';
+    card.setAttribute('draggable','true');
+    card.dataset.idx=idx;
+
+    // ドラッグ&ドロップ
+    card.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',idx);card.classList.add('dragging');});
+    card.addEventListener('dragend',()=>card.classList.remove('dragging'));
+    card.addEventListener('dragover',e=>{e.preventDefault();card.classList.add('drag-over');});
+    card.addEventListener('dragleave',()=>card.classList.remove('drag-over'));
+    card.addEventListener('drop',e=>{
+      e.preventDefault();card.classList.remove('drag-over');
+      const fromIdx=parseInt(e.dataTransfer.getData('text/plain'));
+      const toIdx=idx;
+      if(fromIdx===toIdx)return;
+      const routines=getData();
+      const[moved]=routines.splice(fromIdx,1);
+      routines.splice(toIdx,0,moved);
+      saveData(routines);render();
+    });
+
+    let nextBanner='';
+    if(nextDate){
+      const color=isOverdue?'#C07070':'#B8944A';
+      const bg=isOverdue?'#FCECEA':'var(--gold-pale)';
+      nextBanner=`<div class="next-banner" style="background:${bg};color:${color};"><span>${isOverdue?'⚠️':'↻'}</span><span>次回予定：${fmtDate(nextDate)}${isOverdue?' (過ぎています)':''}</span></div>`;
+    }
+
+    const sortedRecs=[...records].sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+    const showRecs=sortedRecs.slice(-5);
+
+    const recRows=showRecs.map(rec=>{
+      const recIdx=records.indexOf(rec);
+      const globalNum=sortedRecs.indexOf(rec)+1;
+      const status=rec.done?`<span class="record-status status-done">✓</span>`:`<span class="record-status status-planned">予定</span>`;
+      const photoHtml=rec.photo?`<img src="${rec.photo}" class="record-photo" onclick="event.stopPropagation();viewPhoto('${rec.photo}')">`:'' ;
+      return `
+        <div class="record-swipe-wrap" id="sw-${routine.id}-${recIdx}">
+          <div class="record-swipe-actions">
+            <button class="swipe-done-btn" onclick="toggleRecDone('${routine.id}',${recIdx})">✓</button>
+            <button class="swipe-del-btn" onclick="delRecord('${routine.id}',${recIdx})">🗑</button>
+          </div>
+          <div class="record-row" onmousedown="startSwipe(event,'${routine.id}',${recIdx})" ontouchstart="startSwipe(event,'${routine.id}',${recIdx})" onclick="openEditRecord('${routine.id}',${recIdx})">
+            <div class="record-num">${globalNum}</div>
+            <div class="${rec.date?'record-date':'record-date no-date'}">${rec.date?fmtShort(rec.date):'未定'}</div>
+            <div class="record-info">
+              ${rec.before?`<div class="record-note">前：${rec.before}</div>`:''}
+              ${rec.after?`<div class="record-note">後：${rec.after}</div>`:''}
+              ${rec.cost?`<div class="record-cost">¥${rec.cost.toLocaleString()}</div>`:''}
+            </div>
+            ${photoHtml}
+            ${status}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    const starsHtml=[1,2,3,4,5].map(i=>`<span class="star ${i<=stars?'filled':''}">★</span>`).join('');
+    const effectHtml=effectEnd?`<span class="record-status" style="font-size:10px;background:${effectExpired?'#FCECEA':'var(--sage-light)'};color:${effectExpired?'#C07070':'var(--sage)'};">効果${effectExpired?'期限切れ':'持続中'}</span>`:'';
+
+    card.innerHTML=`
+      <div class="routine-header" onclick="toggleRoutine('rb-${routine.id}')">
+        <div class="drag-handle" onclick="event.stopPropagation()">⠿</div>
+        <div class="routine-icon" style="background:${cat.bg};">${cat.icon}</div>
+        <div class="routine-info">
+          <div class="routine-name">${routine.name} ${effectHtml}</div>
+          <div class="routine-meta">${routine.clinic?`🏥 ${routine.clinic}`:''} ${routine.interval?`· ${routine.interval}ヶ月ごと`:''} ${routine.avgCost?`· 平均¥${Number(routine.avgCost).toLocaleString()}`:''}</div>
+          <div class="star-row">${starsHtml}</div>
+        </div>
+        <div class="routine-stats">
+          <div class="routine-count">${doneRecs.length}</div>
+          <div class="routine-count-lbl">回実施</div>
+        </div>
+      </div>
+      ${nextBanner}
+      ${inDT&&advice?`<div class="advice-banner">🔴 DT中（${dtEndDate}まで）｜${advice}</div>`:''}
+      <div id="rb-${routine.id}" style="display:none;">
+        <div style="padding:8px 16px 0;">
+          ${recRows||'<div class="empty" style="padding:12px;">まだ記録がありません</div>'}
+          ${records.length>5?`<div style="text-align:center;font-size:11px;color:var(--text-dim);padding:4px;">他${records.length-5}件</div>`:''}
+          <button class="add-record-btn" onclick="openAddRecord('${routine.id}')">＋ 記録を追加</button>
+        </div>
+        <div style="display:flex;gap:8px;padding:10px 16px 12px;">
+          <button onclick="openEditRoutine('${routine.id}')" style="flex:1;background:var(--gold-pale);border:none;border-radius:8px;padding:7px;font-size:12px;color:var(--gold);cursor:pointer;font-family:'Shippori Mincho',serif;">編集</button>
+          <button onclick="deleteRoutine('${routine.id}')" style="flex:1;background:#FCECEA;border:none;border-radius:8px;padding:7px;font-size:12px;color:#C07070;cursor:pointer;font-family:'Shippori Mincho',serif;">削除</button>
+        </div>
+      </div>
+    `;
+    main.appendChild(card);
+  });
+}
+
+function toggleRoutine(id){const el=document.getElementById(id);el.style.display=el.style.display==='none'?'block':'none';}
+
+// スワイプ
+let swipeStart=null;
+function startSwipe(e,rId,rIdx){
+  const x=e.touches?e.touches[0].clientX:e.clientX;
+  swipeStart={x,rId,rIdx};
+  const onMove=ev=>{
+    if(!swipeStart)return;
+    const cx=ev.touches?ev.touches[0].clientX:ev.clientX;
+    const dx=swipeStart.x-cx;
+    const row=document.querySelector(`#sw-${rId}-${rIdx} .record-row`);
+    if(row&&dx>10)row.style.transform=`translateX(-${Math.min(dx,100)}px)`;
+  };
+  const onEnd=ev=>{
+    if(!swipeStart)return;
+    const cx=ev.changedTouches?ev.changedTouches[0].clientX:ev.clientX;
+    const dx=swipeStart.x-cx;
+    const row=document.querySelector(`#sw-${rId}-${rIdx} .record-row`);
+    if(dx>60&&row)row.style.transform='translateX(-100px)';
+    else if(row)row.style.transform='';
+    swipeStart=null;
+    document.removeEventListener('mousemove',onMove);
+    document.removeEventListener('mouseup',onEnd);
+    document.removeEventListener('touchmove',onMove);
+    document.removeEventListener('touchend',onEnd);
+  };
+  document.addEventListener('mousemove',onMove);
+  document.addEventListener('mouseup',onEnd);
+  document.addEventListener('touchmove',onMove,{passive:true});
+  document.addEventListener('touchend',onEnd);
+}
+
+function toggleRecDone(rId,rIdx){
+  const routines=getData();const r=routines.find(x=>x.id===rId);
+  if(r&&r.records[rIdx])r.records[rIdx].done=!r.records[rIdx].done;
+  saveData(routines);render();
+}
+
+function delRecord(rId,rIdx){
+  if(!confirm('この記録を削除しますか？'))return;
+  const routines=getData();const r=routines.find(x=>x.id===rId);
+  if(r)r.records.splice(rIdx,1);
+  saveData(routines);render();
+}
+
+function viewPhoto(src){const w=window.open();w.document.write(`<img src="${src}" style="max-width:100%;">`)}
+
+// ============ タイムライン ============
+function renderTimeline(routines,main){
+  main.innerHTML='';
+  const now=new Date();const year=now.getFullYear();const nowM=now.getMonth()+1;
+  const byMonth={};for(let m=1;m<=12;m++)byMonth[m]=[];
+  routines.forEach(r=>{
+    (r.records||[]).forEach(rec=>{
+      if(!rec.date)return;
+      const y=parseInt(rec.date.split('-')[0]);const m=parseInt(rec.date.split('-')[1]);
+      if(y===year)byMonth[m].push({r,rec});
+    });
+    const next=getNextDate(r);
+    if(next){const y=parseInt(next.split('-')[0]);const m=parseInt(next.split('-')[1]);if(y===year)byMonth[m].push({r,rec:{date:next,done:false,isNext:true}});}
+  });
+
+  for(let m=1;m<=12;m++){
+    const items=byMonth[m].sort((a,b)=>(a.rec.date||'').localeCompare(b.rec.date||''));
+    const isPast=m<nowM;const isCurrent=m===nowM;
+    const block=document.createElement('div');
+    block.style.cssText=`margin-bottom:8px;${isPast?'opacity:0.5':''}`;
+    if(isCurrent)block.id='tlNow';
+    const badge=isCurrent?`<span style="font-size:9px;background:var(--gold);color:white;padding:2px 7px;border-radius:8px;letter-spacing:0.1em;margin-left:6px;">NOW</span>`:'';
+    const rows=items.map(({r,rec})=>{
+      const cat=CAT[r.category]||CAT['その他'];
+      const status=rec.isNext?`<span class="record-status status-planned">次回</span>`:rec.done?`<span class="record-status status-done">✓</span>`:`<span class="record-status" style="background:var(--mint-light);color:var(--text-dim);">予定</span>`;
+      return `<div style="display:flex;align-items:center;gap:10px;padding:8px 14px;background:white;border-radius:12px;margin-bottom:6px;border:1px solid var(--gold-pale);">
+        <span style="font-size:16px;">${cat.icon}</span>
+        <div style="flex:1;"><div style="font-size:14px;font-weight:600;">${r.name}</div><div style="font-size:11px;color:var(--text-dim);">${fmtShort(rec.date)}</div></div>
+        ${status}
+      </div>`;
+    }).join('');
+    block.innerHTML=`<div style="display:flex;align-items:center;padding:10px 4px 6px;cursor:pointer;" onclick="toggleTl('tl${m}')">
+      <span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);font-weight:600;">${m}月</span>${badge}
+      <span style="font-size:11px;color:var(--text-dim);margin-left:8px;">${items.length}件</span>
+    </div><div id="tl${m}" ${isPast?'style="display:none"':''}>${rows||'<div class="empty" style="padding:8px;">記録なし</div>'}</div>`;
+    main.appendChild(block);
+  }
+  setTimeout(()=>{const el=document.getElementById('tlNow');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},100);
+}
+function toggleTl(id){const el=document.getElementById(id);el.style.display=el.style.display==='none'?'':'none';}
+
+// ============ グラフタブ ============
+function renderGraph(routines,main){
+  main.innerHTML='';
+
+  // 月別費用グラフ
+  const now=new Date();const year=now.getFullYear();
+  const monthCosts=Array(12).fill(0);
+  routines.forEach(r=>(r.records||[]).filter(x=>x.done&&x.date&&parseInt(x.date.split('-')[0])===year).forEach(rec=>{monthCosts[parseInt(rec.date.split('-')[1])-1]+=rec.cost||0;}));
+  const maxCost=Math.max(...monthCosts,1);
+
+  const monthChart=document.createElement('div');
+  monthChart.className='chart-wrap';
+  monthChart.innerHTML=`
+    <div class="chart-title">
+      <span>📊 ${year}年 月別費用</span>
+      <button onclick="exportCSV()" style="background:var(--gold-pale);border:none;border-radius:8px;padding:4px 10px;font-size:11px;color:var(--gold);cursor:pointer;font-family:'Shippori Mincho',serif;">CSVで出力</button>
+    </div>
+    <div class="chart-bars">
+      ${monthCosts.map((v,i)=>`
+        <div class="chart-bar-wrap">
+          <div class="chart-bar-val">${v?'¥'+(v/1000).toFixed(0)+'k':''}</div>
+          <div class="chart-bar" style="height:${Math.round((v/maxCost)*90)+10}px;${v===0?'background:var(--mint-light);':''}"></div>
+          <div class="chart-bar-lbl">${i+1}月</div>
+        </div>
+      `).join('')}
+    </div>
+    <div style="text-align:right;font-size:12px;color:var(--gold);margin-top:8px;">年間合計：¥${monthCosts.reduce((a,b)=>a+b,0).toLocaleString()}</div>
+  `;
+  main.appendChild(monthChart);
+
+  // ルーチンごとの費用推移
+  routines.forEach(r=>{
+    const recs=(r.records||[]).filter(x=>x.done&&x.date&&x.cost).sort((a,b)=>a.date.localeCompare(b.date));
+    if(recs.length<2)return;
+    const maxV=Math.max(...recs.map(x=>x.cost),1);
+    const wrap=document.createElement('div');
+    wrap.className='chart-wrap';
+    wrap.innerHTML=`
+      <div class="chart-title"><span>${CAT[r.category]?.icon||'📌'} ${r.name} 費用推移</span></div>
+      <div class="chart-bars">
+        ${recs.map(rec=>`
+          <div class="chart-bar-wrap">
+            <div class="chart-bar-val">¥${(rec.cost/1000).toFixed(0)}k</div>
+            <div class="chart-bar" style="height:${Math.round((rec.cost/maxV)*90)+10}px;"></div>
+            <div class="chart-bar-lbl">${fmtShort(rec.date)}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    main.appendChild(wrap);
+  });
+
+  // 肌コンディション履歴
+  const skin=getSkin().slice(-10);
+  if(skin.length){
+    const skinWrap=document.createElement('div');
+    skinWrap.className='chart-wrap';
+    skinWrap.innerHTML=`
+      <div class="chart-title">🌿 肌コンディション履歴</div>
+      ${skin.reverse().map(s=>`<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--mint-light);font-size:13px;">
+        <span style="color:var(--text-dim);font-size:11px;min-width:60px;">${fmtShort(s.date)}</span>
+        <span style="font-size:18px;">${s.emoji}</span>
+        <span style="color:var(--text-dim);">${s.comment}</span>
+      </div>`).join('')}
+    `;
+    main.appendChild(skinWrap);
+  }
+}
+
+// CSV出力
+function exportCSV(){
+  const routines=getData();
+  let csv='ルーチン名,カテゴリー,日付,費用,施術前メモ,施術後メモ\n';
+  routines.forEach(r=>{
+    (r.records||[]).filter(x=>x.done).forEach(rec=>{
+      csv+=`"${r.name}","${r.category}","${rec.date||''}","${rec.cost||0}","${rec.before||''}","${rec.after||''}"\n`;
+    });
+  });
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='beauty_schedule.csv';a.click();
+}
+
+// ============ メモタブ ============
+function renderMemoTab(main){
+  const memo=getMemo();
+  main.innerHTML=`<div class="memo-box">
+    <div class="memo-title"><span>📝 My Memo</span><button class="memo-edit-btn" onclick="startMemoEdit()">編集</button></div>
+    <div id="memoDisplay">${memo?`<div class="memo-text">${memo.replace(/</g,'&lt;')}</div>`:'<div class="memo-empty">タップして自由にメモできます</div>'}</div>
+    <div id="memoEditArea" style="display:none;">
+      <textarea class="memo-textarea" id="memoTextarea" placeholder="施術の感想、次回への覚え書きなど...">${memo}</textarea>
+      <div class="memo-save-row">
+        <button class="memo-save-btn" onclick="saveMemoEdit()">保存</button>
+        <button class="memo-cancel-btn" onclick="cancelMemoEdit()">キャンセル</button>
+      </div>
+    </div>
+  </div>`;
+}
+function startMemoEdit(){document.getElementById('memoDisplay').style.display='none';document.getElementById('memoEditArea').style.display='block';document.getElementById('memoTextarea').focus();}
+function saveMemoEdit(){saveMemoStore(document.getElementById('memoTextarea').value);render();}
+function cancelMemoEdit(){render();}
+
+// ============ ルーチンCRUD ============
+let tempRoutineStar=0;
+function setRoutineStar(n){
+  tempRoutineStar=n;
+  document.getElementById('routineStar').value=n;
+  document.querySelectorAll('#routineStarInput span').forEach((s,i)=>s.classList.toggle('on',i<n));
+}
+
+function openAddRoutineModal(){
+  document.getElementById('routineModalTitle').textContent='ルーチンを追加';
+  document.getElementById('routineEditId').value='';
+  ['routineName','routineInterval','routineClinic','routineCost','routineDowntime','routineEffect'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('routineCategory').value='美容医療';
+  setRoutineStar(0);
+  document.getElementById('routineOverlay').classList.add('open');
+}
+
+function openEditRoutine(id){
+  const r=getData().find(x=>x.id===id);if(!r)return;
+  document.getElementById('routineModalTitle').textContent='ルーチンを編集';
+  document.getElementById('routineEditId').value=id;
+  document.getElementById('routineName').value=r.name;
+  document.getElementById('routineCategory').value=r.category;
+  document.getElementById('routineInterval').value=r.interval||'';
+  document.getElementById('routineClinic').value=r.clinic||'';
+  document.getElementById('routineCost').value=r.avgCost||'';
+  document.getElementById('routineDowntime').value=r.downtime||'';
+  document.getElementById('routineEffect').value=r.effectMonths||'';
+  setRoutineStar(r.star||0);
+  document.getElementById('routineOverlay').classList.add('open');
+}
+
+function closeRoutineModal(){document.getElementById('routineOverlay').classList.remove('open');}
+
+function saveRoutine(){
+  const name=document.getElementById('routineName').value.trim();
+  if(!name){alert('施術名を入力してください');return;}
+  const routines=getData();
+  const editId=document.getElementById('routineEditId').value;
+  const data={name,category:document.getElementById('routineCategory').value,interval:parseInt(document.getElementById('routineInterval').value)||null,clinic:document.getElementById('routineClinic').value.trim(),avgCost:parseInt(document.getElementById('routineCost').value)||0,downtime:parseInt(document.getElementById('routineDowntime').value)||0,effectMonths:parseInt(document.getElementById('routineEffect').value)||null,star:parseInt(document.getElementById('routineStar').value)||0};
+  if(editId){const idx=routines.findIndex(r=>r.id===editId);if(idx>=0)Object.assign(routines[idx],data);}
+  else{const maxId=Math.max(0,...routines.map(r=>parseInt(r.id)||0));routines.push({id:String(maxId+1),records:[],...data});}
+  saveData(routines);closeRoutineModal();render();
+}
+
+function deleteRoutine(id){if(!confirm('このルーチンと全記録を削除しますか？'))return;saveData(getData().filter(r=>r.id!==id));render();}
+
+// ============ 記録CRUD ============
+function handlePhotoUpload(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    document.getElementById('recordPhoto').value=ev.target.result;
+    const prev=document.getElementById('recordPhotoPreview');
+    prev.src=ev.target.result;prev.style.display='block';
+  };
+  reader.readAsDataURL(file);
+}
+
+function openAddRecord(routineId){
+  document.getElementById('recordModalTitle').textContent='記録を追加';
+  document.getElementById('recordRoutineId').value=routineId;
+  document.getElementById('recordEditIdx').value='';
+  document.getElementById('recordDate').value=todayStr();
+  document.getElementById('recordCost').value='';
+  document.getElementById('recordBefore').value='';
+  document.getElementById('recordAfter').value='';
+  document.getElementById('recordPhoto').value='';
+  document.getElementById('recordPhotoPreview').style.display='none';
+  document.getElementById('recordOverlay').classList.add('open');
+}
+
+function openEditRecord(routineId,idx){
+  const r=getData().find(x=>x.id===routineId);if(!r)return;
+  const rec=r.records[idx];
+  document.getElementById('recordModalTitle').textContent='記録を編集';
+  document.getElementById('recordRoutineId').value=routineId;
+  document.getElementById('recordEditIdx').value=idx;
+  document.getElementById('recordDate').value=rec.date||todayStr();
+  document.getElementById('recordCost').value=rec.cost||'';
+  document.getElementById('recordBefore').value=rec.before||'';
+  document.getElementById('recordAfter').value=rec.after||'';
+  document.getElementById('recordPhoto').value=rec.photo||'';
+  const prev=document.getElementById('recordPhotoPreview');
+  if(rec.photo){prev.src=rec.photo;prev.style.display='block';}else prev.style.display='none';
+  document.getElementById('recordOverlay').classList.add('open');
+}
+
+function closeRecordModal(){document.getElementById('recordOverlay').classList.remove('open');}
+
+function saveRecord(){
+  const routineId=document.getElementById('recordRoutineId').value;
+  const editIdx=document.getElementById('recordEditIdx').value;
+  const routines=getData();const r=routines.find(x=>x.id===routineId);if(!r)return;
+  const rec={date:document.getElementById('recordDate').value,cost:parseInt(document.getElementById('recordCost').value)||0,before:document.getElementById('recordBefore').value.trim(),after:document.getElementById('recordAfter').value.trim(),photo:document.getElementById('recordPhoto').value,done:true};
+  if(editIdx!=='')r.records[parseInt(editIdx)]=rec;
+  else{r.records.push(rec);r.records.sort((a,b)=>(a.date||'').localeCompare(b.date||''));}
+  saveData(routines);closeRecordModal();render();
+}
+
+// ============ 肌日記 ============
+let selectedSkinEmoji='😊';
+function openSkinModal(){selectedSkinEmoji='😊';document.getElementById('skinEmoji').value='';document.getElementById('skinComment').value='';document.getElementById('skinOverlay').classList.add('open');}
+function closeSkinModal(){document.getElementById('skinOverlay').classList.remove('open');}
+function selectSkinEmoji(e){selectedSkinEmoji=e;document.getElementById('skinEmoji').value=e;document.querySelectorAll('#skinEmojiPicker button').forEach(b=>{b.style.borderColor=b.textContent.startsWith(e)?'var(--gold)':'var(--border)';});}
+function saveSkinDiary(){
+  const emoji=document.getElementById('skinEmoji').value||selectedSkinEmoji;
+  const comment=document.getElementById('skinComment').value.trim();
+  const skin=getSkin();
+  skin.push({date:todayStr(),emoji,comment});
+  if(skin.length>90)skin.shift();
+  saveSkin(skin);closeSkinModal();render();
+}
+
+// ============ サマリーシート ============
+function openSheet(type){
+  const routines=getData();let title='',html='';
+  if(type==='routines'){
+    title=`登録ルーチン（${routines.length}件）`;
+    html=routines.map(r=>{const cat=CAT[r.category]||CAT['その他'];const stars=[1,2,3,4,5].map(i=>`<span style="color:${i<=(r.star||0)?'var(--gold)':'var(--border)'}">★</span>`).join('');return`<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--mint-light);"><span style="font-size:20px;">${cat.icon}</span><div style="flex:1;"><div style="font-size:14px;font-weight:600;">${r.name}</div><div style="font-size:11px;color:var(--text-dim);">${r.clinic||''} ${r.interval?`· ${r.interval}ヶ月ごと`:''}</div><div>${stars}</div></div><div style="font-size:12px;color:var(--gold);">${(r.records||[]).filter(x=>x.done).length}回</div></div>`;}).join('')||'<div class="empty">なし</div>';
+  }else if(type==='done'){
+    title='完了記録';const all=routines.flatMap(r=>(r.records||[]).filter(x=>x.done).map(rec=>({...rec,rName:r.name})));all.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+    html=all.map(rec=>`<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--mint-light);font-size:13px;"><span style="color:var(--text-dim);min-width:60px;">${fmtShort(rec.date)}</span><span style="flex:1;">${rec.rName}</span>${rec.cost?`<span style="color:var(--gold);">¥${rec.cost.toLocaleString()}</span>`:''}</div>`).join('')||'<div class="empty">なし</div>';
+  }else if(type==='upcoming'){
+    title='次回予定';const up=routines.filter(r=>getNextDate(r)).map(r=>({name:r.name,next:getNextDate(r),cat:CAT[r.category]||CAT['その他']})).sort((a,b)=>a.next.localeCompare(b.next));
+    html=up.map(u=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--mint-light);"><span style="font-size:18px;">${u.cat.icon}</span><span style="flex:1;font-size:14px;">${u.name}</span><span style="font-size:13px;color:${u.next<todayStr()?'#C07070':'var(--gold)'};">${fmtDate(u.next)}</span></div>`).join('')||'<div class="empty">なし</div>';
+  }else if(type==='cost'){
+    title='費用内訳';const tot=routines.flatMap(r=>(r.records||[]).filter(x=>x.done)).reduce((s,r)=>s+(r.cost||0),0);
+    html=routines.map(r=>{const c=(r.records||[]).filter(x=>x.done).reduce((s,x)=>s+(x.cost||0),0);return c?`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--mint-light);font-size:13px;"><span>${r.name}</span><span style="color:var(--gold);">¥${c.toLocaleString()}</span></div>`:'';}).join('');
+    html+=tot?`<div style="display:flex;justify-content:space-between;padding:10px 0;font-size:15px;font-weight:600;"><span>合計</span><span style="color:var(--rose);">¥${tot.toLocaleString()}</span></div>`:'<div class="empty">費用の記録なし</div>';
+  }
+  document.getElementById('sheetTitle').textContent=title;
+  document.getElementById('sheetContent').innerHTML=html;
+  document.getElementById('sheetOverlay').classList.add('open');
+}
+function closeSheet(){document.getElementById('sheetOverlay').classList.remove('open');}
+
+
+// ============ 勝負日 ============
+const BEAUTY_TIMELINE = [
+  { name:'ダーマペン・ピーリング', days:14, icon:'💆', cat:'美容医療', note:'赤みが引くまで2週間必要' },
+  { name:'ボトックス・ヒアルロン酸', days:14, icon:'💉', cat:'美容医療', note:'腫れが完全に引くまで2週間' },
+  { name:'ハイフ・サーマクール', days:14, icon:'🔮', cat:'美容医療', note:'熱感が落ち着くまで2週間' },
+  { name:'フォトフェイシャル', days:7, icon:'✨', cat:'美容医療', note:'赤みが引くまで1週間' },
+  { name:'美容院（カラー・パーマ）', days:5, icon:'✂️', cat:'美容院', note:'5日前が仕上がりベスト' },
+  { name:'まつエク・まつパ', days:4, icon:'👁️', cat:'まつげ', note:'4日前で馴染む' },
+  { name:'ネイル', days:3, icon:'💅', cat:'ネイル', note:'3日前でちょうど良い' },
+  { name:'脱毛', days:3, icon:'🌸', cat:'美容医療', note:'赤みが引くまで3日' },
+  { name:'フェイシャルエステ', days:2, icon:'🧖', cat:'エステ', note:'翌日には肌が落ち着く' },
+  { name:'眉毛サロン', days:2, icon:'👑', cat:'その他', note:'2日で自然に仕上がる' },
+  { name:'セルフパック・保湿ケア', days:1, icon:'🌙', cat:'エステ', note:'前日の集中保湿が効果的' },
+  { name:'ホワイトニング', days:3, icon:'🦷', cat:'歯科', note:'3日で色が安定する' },
+];
+
+function getEvents(){return JSON.parse(localStorage.getItem('beautyEvents')||'[]');}
+function saveEvents(e){localStorage.setItem('beautyEvents',JSON.stringify(e));}
+
+let selectedEventEmoji='✈️';
+function selectEventEmoji(e){
+  selectedEventEmoji=e;
+  document.getElementById('eventEmoji').value=e;
+  document.querySelectorAll('#eventEmojiPicker button').forEach(b=>{
+    b.style.borderColor=b.textContent.startsWith(e)?'var(--rose)':'var(--border)';
+    b.style.background=b.textContent.startsWith(e)?'var(--rose-light)':'white';
+  });
+}
+
+function openAddEventModal(){
+  document.getElementById('eventModalTitle').textContent='勝負日を設定';
+  document.getElementById('eventEditId').value='';
+  document.getElementById('eventName').value='';
+  document.getElementById('eventDate').value='';
+  document.getElementById('eventEmoji').value='✈️';
+  selectedEventEmoji='✈️';
+  document.getElementById('eventOverlay').classList.add('open');
+}
+function closeEventModal(){document.getElementById('eventOverlay').classList.remove('open');}
+
+function saveEvent(){
+  const name=document.getElementById('eventName').value.trim();
+  const date=document.getElementById('eventDate').value;
+  if(!name||!date){alert('イベント名と日付を入力してください');return;}
+  const events=getEvents();
+  const editId=document.getElementById('eventEditId').value;
+  const data={name,date,emoji:document.getElementById('eventEmoji').value||selectedEventEmoji};
+  if(editId){const idx=events.findIndex(e=>e.id===editId);if(idx>=0)Object.assign(events[idx],data);}
+  else{const maxId=Math.max(0,...events.map(e=>parseInt(e.id)||0));events.push({id:String(maxId+1),...data});}
+  saveEvents(events);closeEventModal();render();
+}
+
+function deleteEvent(id){if(!confirm('削除しますか？'))return;saveEvents(getEvents().filter(e=>e.id!==id));render();}
+
+function renderEventTab(main){
+  main.innerHTML='';
+  const events=getEvents().sort((a,b)=>a.date.localeCompare(b.date));
+  const today=todayStr();
+  const routines=getData();
+
+  if(!events.length){
+    main.innerHTML=`<div class="empty" style="padding:40px 20px;">
+      <div style="font-size:48px;margin-bottom:12px;">🎯</div>
+      <div style="font-size:15px;font-weight:600;margin-bottom:8px;">勝負日を設定しよう</div>
+      <div style="font-size:13px;color:var(--text-dim);">旅行・記念日・撮影など大切な日から逆算して美容スケジュールを自動提案します</div>
+      <button onclick="openAddEventModal()" style="margin-top:20px;background:linear-gradient(135deg,var(--rose),var(--gold-light));color:white;border:none;border-radius:12px;padding:12px 28px;font-size:14px;font-family:'Shippori Mincho',serif;cursor:pointer;">＋ 勝負日を追加</button>
+    </div>`;
+    return;
+  }
+
+  // 追加ボタン
+  const addBtn=document.createElement('button');
+  addBtn.onclick=openAddEventModal;
+  addBtn.style.cssText='width:100%;background:none;border:1.5px dashed var(--rose);border-radius:12px;padding:10px;font-size:13px;color:var(--rose);cursor:pointer;font-family:"Shippori Mincho",serif;margin-bottom:14px;';
+  addBtn.textContent='＋ 勝負日を追加';
+  main.appendChild(addBtn);
+
+  events.forEach(ev=>{
+    const daysLeft=Math.ceil((new Date(ev.date)-new Date(today))/(864e5));
+    const isPast=daysLeft<0;
+
+    const card=document.createElement('div');
+    card.className='event-card';
+
+    // 逆算スケジュール生成
+    const scheduleItems=BEAUTY_TIMELINE.map(item=>{
+      const schedDate=calcNext(ev.date,-item.days); // days前
+      const dLeft=Math.ceil((new Date(schedDate)-new Date(today))/(864e5));
+      const dateObj=new Date(ev.date);
+      dateObj.setDate(dateObj.getDate()-item.days);
+      const schedDateStr=`${dateObj.getFullYear()}-${String(dateObj.getMonth()+1).padStart(2,'0')}-${String(dateObj.getDate()).padStart(2,'0')}`;
+      const isPastSched=schedDateStr<today;
+      const isToday=schedDateStr===today;
+      // ルーチンとの照合
+      const matchedRoutine=routines.find(r=>r.name.includes(item.name.split('・')[0])||item.name.includes(r.name.split('（')[0]));
+      const statusCls=isPast?'schedule-ok':isPastSched?'schedule-warn':isToday?'schedule-normal':'schedule-normal';
+      const statusTxt=isPast?'完了':isPastSched?'⚠️ 過ぎた':isToday?'📌 今日!':'';
+      return{item,schedDateStr,dLeft,isPastSched,statusCls,statusTxt,matchedRoutine};
+    });
+
+    const rows=scheduleItems.map(({item,schedDateStr,dLeft,isPastSched,statusCls,statusTxt,matchedRoutine})=>`
+      <div class="schedule-item" style="${isPastSched&&!isPast?'background:#FEF8F8;':''}">
+        <div class="schedule-day">
+          <div style="font-size:13px;">${fmtShort(schedDateStr)}</div>
+          <div style="font-size:10px;color:var(--text-dim);">${isPast?'':isPastSched?'過ぎた':`${item.days}日前`}</div>
+        </div>
+        <div style="font-size:16px;">${item.icon}</div>
+        <div class="schedule-name">
+          <div>${item.name}</div>
+          <div style="font-size:10px;color:var(--text-dim);">${item.note}</div>
+          ${matchedRoutine?`<div style="font-size:10px;color:var(--sage);">✓ ${matchedRoutine.name}のルーチンあり</div>`:''}
+        </div>
+        ${statusTxt?`<span class="schedule-status ${statusCls}">${statusTxt}</span>`:''}
+      </div>
+    `).join('');
+
+    card.innerHTML=`
+      <div class="event-header">
+        <div class="event-icon">${ev.emoji||'🎯'}</div>
+        <div class="event-info">
+          <div class="event-name">${ev.name}</div>
+          <div class="event-date">${fmtDate(ev.date)}</div>
+        </div>
+        <div>
+          <div class="event-countdown">${isPast?'終了':Math.abs(daysLeft)}</div>
+          <div class="event-countdown-lbl">${isPast?'':daysLeft===0?'今日！':'日後'}</div>
+        </div>
+      </div>
+      <div style="padding:6px 16px 4px;font-size:11px;color:var(--text-dim);letter-spacing:0.1em;font-weight:700;text-transform:uppercase;background:var(--mint-light);">✨ 逆算ビューティースケジュール</div>
+      ${rows}
+      <div style="padding:10px 16px;display:flex;gap:8px;">
+        <button onclick="deleteEvent('${ev.id}')" style="flex:1;background:#FCECEA;border:none;border-radius:8px;padding:7px;font-size:12px;color:#C07070;cursor:pointer;font-family:'Shippori Mincho',serif;">削除</button>
+      </div>
+    `;
+    main.appendChild(card);
+  });
+}
+
+document.getElementById('eventOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('eventOverlay'))closeEventModal();});
+
+// calcNextの拡張（負の月数対応）
+function calcNextDays(dateStr, days){
+  const d=new Date(dateStr);
+  d.setDate(d.getDate()+days);
+  return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+// イベント
+document.getElementById('routineOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('routineOverlay'))closeRoutineModal();});
+document.getElementById('recordOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('recordOverlay'))closeRecordModal();});
+document.getElementById('skinOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('skinOverlay'))closeSkinModal();});
+document.getElementById('sheetOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('sheetOverlay'))closeSheet();});
+
+
+// ============ シェアタブ ============
+let shareStyle = 'routine'; // routine / monthly / yearly
+
+function renderShareTab(main) {
+  main.innerHTML = '';
+  const routines = getData();
+  const now = new Date();
+  const year = now.getFullYear();
+
+  // スタイル選択
+  const styleWrap = document.createElement('div');
+  styleWrap.className = 'share-card-wrap';
+  styleWrap.style.paddingBottom = '0';
+  styleWrap.innerHTML = `
+    <div class="style-selector">
+      <div class="style-opt ${shareStyle==='routine'?'active':''}" onclick="setShareStyle('routine')">🌿 ルーチン別</div>
+      <div class="style-opt ${shareStyle==='monthly'?'active':''}" onclick="setShareStyle('monthly')">📊 月別グラフ</div>
+      <div class="style-opt ${shareStyle==='yearly'?'active':''}" onclick="setShareStyle('yearly')">🏆 年間まとめ</div>
+    </div>
+  `;
+  main.appendChild(styleWrap);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'share-card-wrap';
+
+  const allRecs = routines.flatMap(r => (r.records||[]).filter(x=>x.done));
+  const totalCost = allRecs.reduce((s,r) => s+(r.cost||0), 0);
+  const monthCosts = Array(12).fill(0);
+  allRecs.filter(x=>x.date&&parseInt(x.date.split('-')[0])===year).forEach(r=>{monthCosts[parseInt(r.date.split('-')[1])-1]+=r.cost||0;});
+  const maxCost = Math.max(...monthCosts, 1);
+
+  let bodyHtml = '';
+
+  if (shareStyle === 'routine') {
+    bodyHtml = `<div class="share-body">` +
+      routines.map(r => {
+        const cat = CAT[r.category]||CAT['その他'];
+        const done = (r.records||[]).filter(x=>x.done).length;
+        const cost = (r.records||[]).filter(x=>x.done).reduce((s,x)=>s+(x.cost||0),0);
+        const stars = [1,2,3,4,5].map(i=>`<span style="color:${i<=(r.star||0)?'#B8944A':'#E0EDEA'};font-size:10px;">★</span>`).join('');
+        return `<div class="share-routine-row">
+          <div class="share-routine-icon">${cat.icon}</div>
+          <div style="flex:1;">
+            <div class="share-routine-name">${r.name}</div>
+            <div>${stars}</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="share-routine-count">${done}回</div>
+            ${cost?`<div class="share-routine-cost">¥${cost.toLocaleString()}</div>`:''}
+          </div>
+        </div>`;
+      }).join('') +
+    `</div>`;
+  } else if (shareStyle === 'monthly') {
+    bodyHtml = `<div class="share-monthly">
+      <div class="share-monthly-title">月別費用 ${year}</div>
+      ${monthCosts.map((v,i)=>`
+        <div class="share-bar-row">
+          <div class="share-bar-lbl">${i+1}月</div>
+          <div class="share-bar-track"><div class="share-bar-fill" style="width:${Math.round(v/maxCost*100)}%"></div></div>
+          <div class="share-bar-val">${v?'¥'+(v/1000).toFixed(0)+'k':''}</div>
+        </div>
+      `).join('')}
+    </div>`;
+  } else {
+    const catCounts = {};
+    routines.forEach(r=>{const k=r.category;catCounts[k]=(catCounts[k]||0)+(r.records||[]).filter(x=>x.done).length;});
+    bodyHtml = `<div class="share-body">
+      <div style="text-align:center;padding:8px 0 14px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:36px;color:#B8944A;font-weight:600;">${allRecs.length}</div>
+        <div style="font-size:11px;color:#5A7870;letter-spacing:0.1em;">回の美容ケア</div>
+      </div>
+      ${Object.entries(catCounts).map(([cat,cnt])=>{
+        const c=CAT[cat]||CAT['その他'];
+        return`<div class="share-routine-row">
+          <div class="share-routine-icon">${c.icon}</div>
+          <div class="share-routine-name">${cat}</div>
+          <div class="share-routine-count">${cnt}回</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+
+  const cardHtml = `
+    <div class="share-card" id="shareCard">
+      <div class="share-card-header">
+        <div class="share-logo">Beauty <em>Schedule</em></div>
+        <div class="share-year">${year} Beauty Report</div>
+        <div class="share-divider"></div>
+        <div class="share-stats-row">
+          <div class="share-stat"><div class="share-stat-num">${routines.length}</div><div class="share-stat-lbl">Routines</div></div>
+          <div class="share-stat"><div class="share-stat-num">${allRecs.length}</div><div class="share-stat-lbl">Sessions</div></div>
+          <div class="share-stat"><div class="share-stat-num">${totalCost?'¥'+(totalCost/10000).toFixed(1)+'万':'—'}</div><div class="share-stat-lbl">Total</div></div>
+        </div>
+      </div>
+      ${bodyHtml}
+      <div class="share-footer">
+        <div class="share-footer-text">✿ Beauty Schedule App ✿</div>
+      </div>
+    </div>
+    <div class="share-btn-row">
+      <button class="share-btn primary" onclick="saveAsImage()">📸 画像で保存</button>
+      <button class="share-btn secondary" onclick="printShare()">🖨️ 印刷</button>
+    </div>
+  `;
+  wrap.innerHTML = cardHtml;
+  main.appendChild(wrap);
+}
+
+function setShareStyle(style) {
+  shareStyle = style;
+  render();
+}
+
+function saveAsImage() {
+  // html2canvasが使えない環境なのでPrint APIで対応
+  const card = document.getElementById('shareCard');
+  const w = window.open('', '_blank');
+  w.document.write(`
+    <html><head>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+      body{margin:0;padding:20px;background:#f0f0f0;display:flex;justify-content:center;font-family:'Shippori Mincho',serif;}
+      ${document.querySelector('style').textContent}
+    </style>
+    </head><body>${card.outerHTML}
+    <script>window.onload=()=>{window.print();}<\/script>
+    </body></html>
+  `);
+  w.document.close();
+}
+
+function printShare() { saveAsImage(); }
+
+function fabAction(){
+  if(currentTab==='event')openAddEventModal();
+  else openAddRoutineModal();
+}
+render();
+</script>
+</body>
+</html>
